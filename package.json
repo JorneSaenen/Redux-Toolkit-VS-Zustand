@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "db-d": "json-server --watch db.json --port 3100 -d 3000",
     "db": "json-server --watch db.json --port 3100",
     "build": "next build",
     "start": "next start",

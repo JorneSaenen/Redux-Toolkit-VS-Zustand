@@ -12,6 +12,7 @@ const Zustand = () => {
   const addTodo = useTodoStore((state) => state.addTodo);
   const removeTodo = useTodoStore((state) => state.removeTodo);
   const toggleTodo = useTodoStore((state) => state.toggleTodo);
+  const loading = useTodoStore((state) => state.loading);
 
   useEffect(() => {
     getTodos();
@@ -42,20 +43,21 @@ const Zustand = () => {
           <input type='text' onChange={(e) => setInput(e.target.value)} value={input} style={{ marginRight: "10px" }} />
           <button className={styles.btn}>add</button>
         </form>
-
-        {todos?.map((todo) => (
-          <div key={todo.id} className={styles.todo}>
-            <p style={{ textDecoration: `${todo.completed ? "line-through" : ""}` }}>
-              {todo.text} - {todo.id}
-            </p>
-            <button className={styles.btn} style={{ marginRight: "10px" }} onClick={() => toggleTodo(todo.id, todo.completed)}>
-              {todo.completed ? "undo" : "check"}
-            </button>
-            <button className={styles.btn} onClick={() => removeTodo(todo.id)}>
-              delete
-            </button>
-          </div>
-        ))}
+        {loading && <p>LOADING...</p>}
+        {!loading &&
+          todos?.map((todo) => (
+            <div key={todo.id} className={styles.todo}>
+              <p style={{ textDecoration: `${todo.completed ? "line-through" : ""}` }}>
+                {todo.text} - {todo.id}
+              </p>
+              <button className={styles.btn} style={{ marginRight: "10px" }} onClick={() => toggleTodo(todo.id, todo.completed)}>
+                {todo.completed ? "undo" : "check"}
+              </button>
+              <button className={styles.btn} onClick={() => removeTodo(todo.id)}>
+                delete
+              </button>
+            </div>
+          ))}
       </main>
     </div>
   );

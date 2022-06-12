@@ -1,11 +1,14 @@
 import create from "zustand";
-import { devtools, persist } from "zustand/middleware";
+import { devtools } from "zustand/middleware";
 
 let todoStore = (set) => ({
   todos: [],
+  loading: false,
   getTodos: async () => {
+    set(() => ({ loading: true }));
     const response = await fetch("http://localhost:3100/data");
     set({ todos: await response.json() });
+    set(() => ({ loading: false }));
   },
   addTodo: async (payload) => {
     await fetch("http://localhost:3100/data", {
@@ -38,7 +41,6 @@ let todoStore = (set) => ({
       },
       body: JSON.stringify({ completed: !completed }),
     });
-
     set((state) => ({
       todos: state.todos.map((todo) => {
         if (todo.id === id) {
@@ -50,7 +52,6 @@ let todoStore = (set) => ({
   },
 });
 
-//todoStore = persist(todoStore, { name: "todos" });
 todoStore = devtools(todoStore);
 
 export const useTodoStore = create(todoStore);
